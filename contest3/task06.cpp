@@ -11,7 +11,6 @@ void print_number(unsigned int num) {
         counter++;
     }
     num <<= 1;
-    num >> counter;
     for(int i = 32 - counter; i > 0; i--) {
         if (num & mask) cout << "7";
         else cout << "1";
