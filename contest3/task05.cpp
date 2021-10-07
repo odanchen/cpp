@@ -2,19 +2,15 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int find_missing_num(int num) {
-    int constnum = num, lost_num = 1;
-    for (int i = 2; i <= constnum; i++) {
-        lost_num ^= num;
-        lost_num ^= i;
-        cin >> num;
-    }
-    if (num == constnum - 1) lost_num = constnum;
-    return lost_num;
-}
-
 int main() {
-    int num;
+    int num, entered_sum, all = 0, entered;
     cin >> num;
-    cout << find_missing_num(num);
+    for (int i = 1; i <= num; i++) {
+        all ^= i;
+    }
+    for (int i = 1; i < num; i++) {
+        cin >> entered;
+        entered_sum ^= entered;
+    }
+    cout << (entered_sum ^ all);
 }
