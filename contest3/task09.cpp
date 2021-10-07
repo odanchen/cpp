@@ -5,7 +5,7 @@ using namespace std;
 
 int main()
 {
-    int result= 0, counter = 0, mask = 1;
+    int result= 0, counter = 0;
     char num;
     bool is_negative = false;
     do {
