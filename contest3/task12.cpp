@@ -9,7 +9,7 @@ int main()
     cin >> sum >> xor_sum;
     if (xor_sum > sum) cout << -1;
     else {
-    cout << ((sum - xor_sum) >> 1) << " " << "\n";
-    cout << ((sum - xor_sum) >> 1) + xor_sum;
+        cout << ((sum - xor_sum) >> 1) << " " << "\n";
+        cout << ((sum - xor_sum) >> 1) + xor_sum;
     }
 }
