@@ -46,3 +46,26 @@ double average_num(int arr[] ,int length) {
     if (counter == 0) return 0;
     else return sum / counter;
 }
+
+void rebuild(int arr[], int father, int last_ind) {
+    int maxson;
+    while (father <= last_ind / 2) {
+        maxson = 2 * father;
+        if (2 * father + 1 <= last_ind && arr[maxson] < arr[2 * father + 1])
+            maxson = 2 * father + 1;
+        if (arr[father] < arr[maxson]) {
+            swap(arr[father], arr[maxson]);
+            swap(father, maxson);
+        }
+        else father = last_ind;
+    }
+}
+
+void heapsort(int arr[], int length) {
+    for (int i = length / 2; i > 0; i--)
+        rebuild(arr, i, length);
+    for (int i = length; i > 1; i--) {
+        swap(arr[1], arr[i]);
+        rebuild(arr, 1, i - 1);
+    }
+}
