@@ -2,16 +2,21 @@
 
 using namespace std;
 
-void generate_arr(int arr[][3], int &length, int limit)
+void generate_arr(int arr[][2], int &length, int limit)
 {
     length = 0;
+    int dil;
     for (int i = 1; i <= limit; i++)
     {
         for(int j = 2; j <= limit; j++)
         {
-            arr[length][0] = i;
-            arr[length][1] = j;
-            length++;
+            dil = __gcd(i, j);
+            if (dil == 1 && (double)((double)i / (double)j) < 1)
+            {
+                arr[length][0] = i;
+                arr[length][1] = j;
+                length++;
+            }
         }
     }
 }
@@ -21,7 +26,7 @@ bool compare(int a[], int b[])
     return (double)a[0] / (double)a[1] > (double)b[0] / (double)b[1];
 }
 
-void quicksort(int arr[][3], int left, int right)
+void quicksort(int arr[][2], int left, int right)
 {
     int i = left, j = right, etalon[2];
     for (int k = 0; k <= 1; k++)
@@ -41,28 +46,18 @@ void quicksort(int arr[][3], int left, int right)
     if(i < right) quicksort(arr, i, right);
 }
 
-void mark_incorrect(int arr[][3], int length)
-{
-    int dil;
-    for (int i = 0; i < length; i++)
-    {
-        dil = __gcd(arr[i][0], arr[i][1]);
-        if (dil != 1 || (double)(arr[i][0] / arr[i][1]) >= 1) arr[i][2] = 1;
-        else arr[i][2] = 0;
-    }
-}
-
 int main()
 {
-    int arr[100000][3], length, limit;
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    int arr[100000][2], length, limit;
     cin >> limit;
     generate_arr(arr, length, limit);
-    mark_incorrect(arr, length);
     quicksort(arr, 0, length - 1);
     for (int i = 0; i < length; i++)
     {
-        if (arr[i][2] == 0)
-            cout << arr[i][0] << "/" << arr[i][1] << "\n";
+        cout << arr[i][0] << "/" << arr[i][1] << "\n";
     }
     return 0;
 }
