@@ -9,9 +9,9 @@ void read_arr(int arr[], int &length)
         cin >> arr[i];
 }
 
-int find_imp_num(int arr[], int length)
+long long find_imp_num(int arr[], int length)
 {
-    int res = 1;
+    long long res = 1;
     for (int i = 0; i < length && arr[i] <= res; i++)
         res = res + arr[i];
     return res;
