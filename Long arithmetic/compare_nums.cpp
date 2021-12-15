@@ -34,7 +34,7 @@ void input_number(Tlong &num)
     else
         num.sign = '+';
     int length = (int)S.size();
-    for (int i = 0; i < length && S[0] == '0'; i++)
+    for (int i = 0; i < length - 1 && S[0] == '0'; i++)
         S.erase(0, 1);
     num.len = (int)S.size();
     if (S[0] == '0')
