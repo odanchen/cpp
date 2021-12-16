@@ -2,7 +2,7 @@
 
 using namespace::std;
 
-const int nmax = 10001;
+const int nmax = 1000000;
 
 struct Tlong
 {
@@ -41,9 +41,9 @@ void input_number(Tlong &num)
     }
     else
         num.sign = '+';
-    int length = (int)S.size();
-    for (int i = 0; i < length - 1 && S[0] == '0'; i++)
-        S.erase(0, 1);
+    //int length = (int)S.size();
+    //for (int i = 0; i < length - 1 && S[0] == '0'; i++)
+    //    S.erase(0, 1);
     num.len = (int)S.size();
     if (S[0] == '0')
         num.sign = '+';
@@ -75,26 +75,6 @@ int compare(Tlong a, Tlong b)
     if (a.sign == '+' && b.sign == '+') return compare_abs(a, b);
     if (a.sign == '-' && b.sign == '-') return -compare_abs(a, b);
     return 0;
-}
-
-Tlong abs_plus(Tlong a, Tlong b)
-{
-    Tlong res;
-    res.sign = '+';
-    clear_num(res);
-    for (int i = 0; i < nmax; i++)
-        res.number[i] = a.number[i];
-    int p = 0;
-    for (int i = nmax - 1; i > nmax - max(a.len, b.len) - 1; i--)
-    {
-        res.number[i] = (a.number[i] + b.number[i] + p) % 10;
-        p = (a.number[i] + b.number[i] + p) / 10;
-    }
-    if (res.number[nmax - max(a.len, b.len) - 1] == 1)
-        res.len = max(a.len, b.len) + 1;
-    else
-        res.len = max(a.len, b.len);
-    return res;
 }
 
 Tlong add_abs(Tlong a, Tlong b)
@@ -160,7 +140,7 @@ void print_num(Tlong num)
         cout << num.number[i];
 }
 
-int main()
+int _main()
 {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
@@ -180,4 +160,5 @@ int main()
         clear_num(num);
         cout << "\n";
     }
+    return 0;
 }
