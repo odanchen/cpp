@@ -78,26 +78,6 @@ int compare(Tlong a, Tlong b)
     return 0;
 }
 
-Tlong abs_plus(Tlong a, Tlong b)
-{
-    Tlong res;
-    res.sign = '+';
-    clear_num(res);
-    for (int i = 0; i < nmax; i++)
-        res.number[i] = a.number[i];
-    int p = 0;
-    for (int i = nmax - 1; i > nmax - max(a.len, b.len) - 1; i--)
-    {
-        res.number[i] = (a.number[i] + b.number[i] + p) % 10;
-        p = (a.number[i] + b.number[i] + p) / 10;
-    }
-    if (res.number[nmax - max(a.len, b.len) - 1] == 1)
-        res.len = max(a.len, b.len) + 1;
-    else
-        res.len = max(a.len, b.len);
-    return res;
-}
-
 Tlong add_abs(Tlong a, Tlong b)
 {
     Tlong res;
