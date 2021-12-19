@@ -2,7 +2,7 @@
 
 using namespace::std;
 
-int nnmain()
+int main()
 {
     int cor[3], len = 3;
     cin >> cor[0] >> cor[1] >> cor[2];
