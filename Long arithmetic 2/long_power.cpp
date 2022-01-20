@@ -7,6 +7,9 @@ const int nmax = 40000;
 class Tlong
 {
 public:
+    char sign = '+';
+    int number[nmax] = {0};
+    int len = 1;
     int get_len();
     void input();
     void print();
@@ -22,9 +25,6 @@ public:
 private:
     Tlong add_abs(Tlong &b);
     Tlong sub_abs(Tlong &b);
-    char sign = '+';
-    int number[nmax] = {0};
-    int len = 1;
     void clear_num();
     int compare_abs(Tlong &b);
 };
@@ -271,14 +271,24 @@ Tlong Tlong::operator/(int b)
     return res;
 }
 
-Tlong Tlong::digit_pow(int &b)
+Tlong pow(int num, int deg)
 {
     Tlong res;
     res.number[nmax - 1] = 1;
     res.len = 1;
-    int multiplier = number[nmax - 1];
-    for (int i = 1; i <= b; i++)
-        res = res*multiplier;
+    while(deg > 0)
+    {
+        if (not(deg & 1) && (num * num >= num))
+        {
+            deg /= 2;
+            num = num * num;
+        }
+        else
+        {
+            deg--;
+            res = res * num;
+        }
+    }
     return res;
 }
 
@@ -287,10 +297,9 @@ int main()
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    Tlong num, res;
-    int power;
-    num.input();
-    cin >> power;
-    res = num.digit_pow(power);
+    Tlong res;
+    int num, power;
+    cin >> num >> power;
+    res = pow(num, power);
     res.print();
 }
