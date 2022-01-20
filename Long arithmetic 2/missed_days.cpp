@@ -2,7 +2,7 @@
 
 using namespace::std;
 
-const int nmax = 20;
+const int nmax = 3001;
 
 class Tlong
 {
@@ -316,13 +316,14 @@ int Tlong::compare_to_0()
     return 1;
 }
 
-Tlong pow(int num, int deg) {
+Tlong pow(int num, int deg)
+{
     Tlong res;
     res.number[nmax - 1] = 1;
     res.len = 1;
     while(deg > 0)
     {
-        if (not(deg & 1))
+        if (not(deg & 1) && (num * num >= num))
         {
             deg /= 2;
             num = num * num;
@@ -341,22 +342,23 @@ int main()
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    int arr[150] = {0};
-    char cur;
-    while (cin.peek() != '\n')
+    string lessons;
+    cin >> lessons;
+    int arr[128] = {0}, len;
+    len = (int)lessons.length();
+    for (int i = 0; i < len; i++)
     {
-        cin >> cur;
-        arr[cur]++;
+        arr[lessons[i]]++;
     }
     Tlong sum;
     Tlong current;
-    for (int i = 0; i < 150; i++)
+    for (int i = 0; i < 128; i++)
     {
         if (arr[i] != 0)
         {
             current = pow(2, arr[i]);
-            --current;
             sum = sum + current;
+            --sum;
         }
     }
     sum.print();
