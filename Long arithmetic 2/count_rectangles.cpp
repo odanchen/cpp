@@ -2,14 +2,7 @@
 
 using namespace::std;
 
-const int nmax = 201;
-
-struct stash
-{
-    int num;
-    bool check = false;
-};
-
+const int nmax = 50000;
 
 class Tlong
 {
