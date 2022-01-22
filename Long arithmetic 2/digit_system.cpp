@@ -4,12 +4,13 @@ using namespace::std;
 
 const int nmax = 1001;
 
+
 class Tlong
 {
 public:
-    char sign = '+';
-    int number[nmax] = {0};
-    int len = 1;
+    Tlong();
+    Tlong(int b);
+    
     int get_len();
     void input();
     void print();
@@ -22,13 +23,47 @@ public:
     Tlong operator/(int b);
     Tlong operator/(Tlong &b);
     Tlong operator%(Tlong &b);
+    int operator%(int &b);
     Tlong operator++();
+    Tlong operator--();
 private:
+    char sign = '+';
+    int number[nmax];
+    int len = 1;
     Tlong add_abs(Tlong &b);
     Tlong sub_abs(Tlong &b);
     void clear_num();
     int compare_abs(Tlong &b);
 };
+
+Tlong::Tlong()
+{
+    sign = '+';
+    len = 1;
+    for (int i = 0; i < nmax; i++)
+        number[i] = 0;
+}
+
+Tlong::Tlong(int b)
+{
+    if (b < 0) sign = '-';
+    else sign = '+';
+    
+    b = abs(b);
+    
+    for (int i = 0; i < nmax; i++)
+        number[i] = 0;
+    
+    int cnt = 0;
+    
+    while(b != 0)
+    {
+        cnt++;
+        number[nmax - cnt] = b % 10;
+        b /= 10;
+    }
+    len = cnt;
+}
 
 void Tlong::clear_num()
 {
@@ -192,6 +227,15 @@ Tlong Tlong::operator++()
         return *this;
     }
 
+Tlong Tlong::operator--()
+{
+    Tlong one;
+    one.number[nmax - 1] = 1;
+    one.len = 1;
+    *this = *this - one;
+    return *this;
+}
+
 Tlong Tlong::operator*(int b)
 {
     Tlong res;
@@ -296,6 +340,23 @@ Tlong Tlong::operator%(Tlong &b)
     return rest;
 }
 
+int Tlong::operator%(int &dil)
+{
+    int remainder = 0;
+    for (int i = nmax - len; i < nmax; i += 0)
+    {
+        if (remainder < dil)
+        {
+            remainder *= 10;
+            remainder += number[i];
+            i++;
+        }
+        else
+            remainder %= dil;
+    }
+    return remainder % dil;
+}
+
 int Tlong::compare_to_0()
 {
     if (len == 0) len = 1;
@@ -306,23 +367,45 @@ int Tlong::compare_to_0()
     return 1;
 }
 
+Tlong pow(int num, int deg)
+{
+    Tlong res(1);
+    while(deg > 0)
+    {
+        if (not(deg & 1) && (num * num >= num))
+        {
+            deg /= 2;
+            num = num * num;
+        }
+        else
+        {
+            deg--;
+            res = res * num;
+        }
+    }
+    return res;
+}
+
 int main()
 {
     Tlong num;
     Tlong p;
     Tlong rests[500];
+    Tlong nine(9);
     int len = 0;
     num.input();
     p.input();
+    
     while(num.compare_to_0() == 1)
     {
         rests[len] = num % p;
         num = num / p;
         len++;
     }
+    
     for(int i = len - 1; i >= 0; i--)
     {
-        if (rests[i].len == 1 || rests[i].len == 0)
+        if (rests[i].compare(nine) != 1)
             rests[i].print();
         else
         {
