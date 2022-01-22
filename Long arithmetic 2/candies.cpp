@@ -14,9 +14,9 @@ struct stash
 class Tlong
 {
 public:
-    char sign = '+';
-    int number[nmax] = {0};
-    int len = 1;
+    Tlong();
+    Tlong(int b);
+    
     int get_len();
     void input();
     void print();
@@ -33,11 +33,43 @@ public:
     Tlong operator++();
     Tlong operator--();
 private:
+    char sign = '+';
+    int number[nmax];
+    int len = 1;
     Tlong add_abs(Tlong &b);
     Tlong sub_abs(Tlong &b);
     void clear_num();
     int compare_abs(Tlong &b);
 };
+
+Tlong::Tlong()
+{
+    sign = '+';
+    len = 1;
+    for (int i = 0; i < nmax; i++)
+        number[i] = 0;
+}
+
+Tlong::Tlong(int b)
+{
+    if (b < 0) sign = '-';
+    else sign = '+';
+    
+    b = abs(b);
+    
+    for (int i = 0; i < nmax; i++)
+        number[i] = 0;
+    
+    int cnt = 0;
+    
+    while(b != 0)
+    {
+        cnt++;
+        number[nmax - cnt] = b % 10;
+        b /= 10;
+    }
+    len = cnt;
+}
 
 void Tlong::clear_num()
 {
@@ -405,5 +437,4 @@ int main()
     }
     
     
-    cout << 1432 % 41;
 }
