@@ -14,9 +14,9 @@ struct remainders
 class Tlong
 {
 public:
-    char sign = '+';
-    int number[nmax] = {0};
-    int len = 1;
+    Tlong();
+    Tlong(int b);
+    
     int get_len();
     void input();
     void print();
@@ -33,11 +33,43 @@ public:
     Tlong operator++();
     Tlong operator--();
 private:
+    char sign = '+';
+    int number[nmax];
+    int len = 1;
     Tlong add_abs(Tlong &b);
     Tlong sub_abs(Tlong &b);
     void clear_num();
     int compare_abs(Tlong &b);
 };
+
+Tlong::Tlong()
+{
+    sign = '+';
+    len = 1;
+    for (int i = 0; i < nmax; i++)
+        number[i] = 0;
+}
+
+Tlong::Tlong(int b)
+{
+    if (b < 0) sign = '-';
+    else sign = '+';
+    
+    b = abs(b);
+    
+    for (int i = 0; i < nmax; i++)
+        number[i] = 0;
+    
+    int cnt = 0;
+    
+    while(b != 0)
+    {
+        cnt++;
+        number[nmax - cnt] = b % 10;
+        b /= 10;
+    }
+    len = cnt;
+}
 
 void Tlong::clear_num()
 {
@@ -367,9 +399,7 @@ int main()
     remainders arr[1000];
     int dil = 2, remainder, idx = 0;
     Tlong num;
-    Tlong one;
-    one.number[nmax - 1] = 1;
-    one.len = 1;
+    Tlong one(1);
     num.input();
     if (num.compare(one) == 0)
     {
