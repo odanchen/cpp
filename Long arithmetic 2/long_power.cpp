@@ -4,30 +4,66 @@ using namespace::std;
 
 const int nmax = 40000;
 
+
 class Tlong
 {
 public:
-    char sign = '+';
-    int number[nmax] = {0};
-    int len = 1;
+    Tlong();
+    Tlong(int b);
+    
     int get_len();
     void input();
     void print();
     int compare(Tlong &b);
+    int compare_to_0();
     Tlong operator+(Tlong &b);
     Tlong operator-(Tlong b);
     Tlong operator*(int b);
     Tlong operator*(Tlong &b);
     Tlong operator/(int b);
     Tlong operator/(Tlong &b);
+    Tlong operator%(Tlong &b);
+    int operator%(int &b);
     Tlong operator++();
-    Tlong digit_pow(int &b);
+    Tlong operator--();
 private:
+    char sign = '+';
+    int number[nmax];
+    int len = 1;
     Tlong add_abs(Tlong &b);
     Tlong sub_abs(Tlong &b);
     void clear_num();
     int compare_abs(Tlong &b);
 };
+
+Tlong::Tlong()
+{
+    sign = '+';
+    len = 1;
+    for (int i = 0; i < nmax; i++)
+        number[i] = 0;
+}
+
+Tlong::Tlong(int b)
+{
+    if (b < 0) sign = '-';
+    else sign = '+';
+    
+    b = abs(b);
+    
+    for (int i = 0; i < nmax; i++)
+        number[i] = 0;
+    
+    int cnt = 0;
+    
+    while(b != 0)
+    {
+        cnt++;
+        number[nmax - cnt] = b % 10;
+        b /= 10;
+    }
+    len = cnt;
+}
 
 void Tlong::clear_num()
 {
@@ -191,6 +227,15 @@ Tlong Tlong::operator++()
         return *this;
     }
 
+Tlong Tlong::operator--()
+{
+    Tlong one;
+    one.number[nmax - 1] = 1;
+    one.len = 1;
+    *this = *this - one;
+    return *this;
+}
+
 Tlong Tlong::operator*(int b)
 {
     Tlong res;
@@ -271,11 +316,60 @@ Tlong Tlong::operator/(int b)
     return res;
 }
 
-Tlong pow(int num, int deg)
+Tlong Tlong::operator%(Tlong &b)
 {
     Tlong res;
-    res.number[nmax - 1] = 1;
-    res.len = 1;
+    Tlong rest;
+    rest.len = 1;
+    for (int i = nmax - len; i < nmax; i++)
+    {
+        if (rest.len != 1 || rest.number[nmax - 1] != 0) rest.len++;
+        for (int j = nmax - rest.len; j < nmax; j++)
+            rest.number[j - 1] = rest.number[j];
+        rest.number[nmax - 1] = number[i];
+        int counter = 0;
+        while(rest.compare_abs(b) >= 0)
+        {
+            rest = rest.sub_abs(b);
+            counter++;
+        }
+        res.number[i] = counter;
+    }
+    rest.len = rest.get_len();
+    rest.sign = sign;
+    return rest;
+}
+
+int Tlong::operator%(int &dil)
+{
+    int remainder = 0;
+    for (int i = nmax - len; i < nmax; i += 0)
+    {
+        if (remainder < dil)
+        {
+            remainder *= 10;
+            remainder += number[i];
+            i++;
+        }
+        else
+            remainder %= dil;
+    }
+    return remainder % dil;
+}
+
+int Tlong::compare_to_0()
+{
+    if (len == 0) len = 1;
+    if (len == 1 && number[nmax - 1] == 0) sign = '+';
+    
+    if (sign == '-') return -1;
+    if (len == 1 && number[nmax - 1] == 0) return 0;
+    return 1;
+}
+
+Tlong pow(int num, int deg)
+{
+    Tlong res(1);
     while(deg > 0)
     {
         if (not(deg & 1) && (num * num >= num))
