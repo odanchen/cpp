@@ -406,6 +406,28 @@ void clear_arr(int arr[], int len)
         arr[i] = 0;
 }
 
+Tlong find_gcd(Tlong a, Tlong b)
+{
+    Tlong rest = a;
+    while (rest.compare_to_0() != 0)
+    {
+        rest = a % b;
+        a = b;
+        b = rest;
+    }
+    return a;
+}
+
+Tlong find_lcm(Tlong &a, int &b)
+{
+    Tlong mlt, gcd, res;
+    Tlong copy(b);
+    mlt = a * b;
+    gcd = find_gcd(a, b);
+    res = mlt / gcd;
+    return res;
+}
+
 int main()
 {
     ios_base::sync_with_stdio(0);
@@ -418,7 +440,7 @@ int main()
     int loops[len], len_2 = 0;
     clear_arr(loops, len);
     
-    for (int i = 1; i < len; i++)
+    for (int i = 1; i <= len; i++)
     {
         int cur;
         if (arr[i].check == false)
@@ -436,5 +458,10 @@ int main()
         }
     }
     
-    
+    Tlong res(loops[len_2 - 1]);
+    for (int i = len_2 - 2; i >= 0; i--)
+    {
+        res = find_lcm(res, loops[i]);
+    }
+    res.print();
 }
