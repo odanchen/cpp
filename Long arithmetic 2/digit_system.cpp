@@ -28,7 +28,7 @@ public:
     Tlong operator--();
 private:
     char sign = '+';
-    int number[nmax];
+    int number[nmax + 1];
     int len = 1;
     Tlong add_abs(Tlong &b);
     Tlong sub_abs(Tlong &b);
