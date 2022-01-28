@@ -23,18 +23,19 @@ public:
     int compare(Tlong &b);
     int compare_to_0();
     Tlong operator+(Tlong &b);
+    Tlong operator+(int &b);
     Tlong operator-(Tlong b);
     Tlong operator*(int b);
     Tlong operator*(Tlong &b);
     Tlong operator/(int b);
     Tlong operator/(Tlong &b);
     Tlong operator%(Tlong &b);
-    int operator%(int &b);
+    int operator%(int b);
     Tlong operator++();
     Tlong operator--();
 private:
     char sign = '+';
-    int number[nmax];
+    int number[nmax + 1];
     int len = 1;
     Tlong add_abs(Tlong &b);
     Tlong sub_abs(Tlong &b);
@@ -122,12 +123,6 @@ void Tlong::print()
         cout << number[i];
 }
 
-void Tlong::print_fraction(int &len)
-{
-    for (int i = nmax - len; i < nmax; i++)
-        cout << number[i];
-}
-
 int Tlong::compare_abs(Tlong &b)
 {
     if (len > b.len) return 1;
@@ -202,6 +197,12 @@ Tlong Tlong::operator+(Tlong &b)
             res.sign = b.sign;
         }
     return res;
+}
+
+Tlong Tlong::operator+(int &b)
+{
+    Tlong adder(b);
+    return *this + adder;
 }
 
 Tlong Tlong::operator-(Tlong b)
@@ -352,7 +353,7 @@ Tlong Tlong::operator%(Tlong &b)
     return rest;
 }
 
-int Tlong::operator%(int &dil)
+int Tlong::operator%(int dil)
 {
     int remainder = 0;
     for (int i = nmax - len; i < nmax; i += 0)
@@ -401,31 +402,73 @@ Tlong find_lcm(Tlong &a, int &b)
     return res;
 }
 
-void deconstruct(remainders arr[], Tlong num)
+int count_mlt(Tlong num, int mlt)
 {
-    Tlong one (1);
-    int dil = 2, remainder, idx = 0;
-    while (num.compare(one) != 0)
+    int cnt = 0;
+    while(num % mlt == 0)
     {
-        remainder = num % dil;
-        if (remainder != 0 && arr[idx].num == dil) idx++;
+        cnt++;
+        num = num / mlt;
+    }
+    return cnt;
+}
+
+int count_rest_len(Tlong num, Tlong dil)
+{
+    int fives1 = 0, fives2 = 0, twos1 = 0, twos2 = 0;
     
-        if (remainder == 0)
-        {
-            arr[idx].num = dil;
-            arr[idx].quantity++;
-            num = num / dil;
-        }
+    fives1 = count_mlt(num, 5);
+    fives2 = count_mlt(dil, 5);
+    twos1 = count_mlt(num, 2);
+    twos2 = count_mlt(dil, 2);
     
-        else
+    if (max(fives2 - fives1, twos2 - twos1) <= 0)
+        return 0;
+    else
+        return max(fives2 - fives1, twos2 - twos1);
+}
+
+Tlong find_real_part(int rest_len, Tlong num, Tlong dil)
+{
+    Tlong mlt (1), real_part;
+    for (int i = 0; i < rest_len; i++)
+        mlt = mlt * 10;
+    
+    num = num * mlt;
+    real_part = num / dil;
+    real_part = real_part % mlt;
+    return real_part;
+}
+
+Tlong find_period(int rest_len, Tlong num, Tlong dil)
+{
+    Tlong ans(0);
+    
+    for (int i = 0; i < rest_len; i++)
+        num = num * 10;
+    
+    num = num * 10;
+    Tlong res;
+    res = num / dil;
+    int period = res % 10;
+    if (period == 0)
+        return 0;
+    
+    ans = ans + period;
+    
+    int cur = 0;
+    while (cur != period)
+    {
+        num = num * 10;
+        res = num / dil;
+        cur = res % 10;
+        if (cur != period)
         {
-            while (remainder != 0)
-            {
-                dil++;
-                remainder = num % dil;
-            }
+            ans = ans * 10;
+            ans = ans + cur;
         }
     }
+    return ans;
 }
 
 int main()
@@ -434,52 +477,36 @@ int main()
     cin.tie(0);
     cout.tie(0);
     
-    Tlong num1, num2;
-    int fives1 = 0, fives2 = 0, twos1 = 0, twos2 = 0, rest_len;
-    Tlong int_part;
-    Tlong real_part;
+    Tlong num, dil, int_part, real_part, period;
+    int rest_len;
     
-    num1.input();
-    num2.input();
-    int_part = num1 / num2;
-
-    remainders remainders1[200];
-    remainders remainders2[200];
+    num.input();
+    dil.input();
     
-    deconstruct(remainders1, num1);
-    deconstruct(remainders2, num2);
+    int_part = num / dil;
+    rest_len = count_rest_len(num, dil);
+    real_part = find_real_part(rest_len, num, dil);
+    period = find_period(rest_len, num, dil);
     
-    int idx = 0;
-    if (remainders1[idx].num == 2)
-        twos1 = remainders1[idx].quantity;
-    while (remainders1[idx].num <= 5 && idx <= 5)
-        idx++;
-    if (remainders1[idx].num == 5)
-        fives1 = remainders1[idx].quantity;
-    
-    idx = 0;
-    if (remainders2[idx].num == 2)
-        twos2 = remainders2[idx].quantity;
-    while (remainders2[idx].num <= 5 && idx <= 5)
-        idx++;
-    if (remainders2[idx].num == 5)
-        fives2 = remainders2[idx].quantity;
-    
-    rest_len = max(abs(twos1 - twos2), abs(fives1 - fives2));
-    
-    Tlong mlt (1);
-    for (int i = 0; i < rest_len; i++)
-        mlt = mlt * 10;
-    
-    num1 = num1 * mlt;
-    real_part = num1 / num2;
-    real_part = real_part % mlt;
-    
-    cout << rest_len << '\n';
     int_part.print();
-    if (real_part.compare_to_0() != 0)
+    
+    if (rest_len != 0)
     {
         cout << '.';
-        real_part.print_fraction(rest_len);
+        int len = real_part.get_len();
+        if (rest_len != len)
+            for (int i = 0; i < rest_len - len; i++)
+                cout << 0;
+        real_part.print();
+    }
+    
+    if (rest_len == 0 && period.compare_to_0() != 0)
+        cout << '.';
+    
+    if (period.compare_to_0() != 0)
+    {
+        cout << '(';
+        period.print();
+        cout << ')';
     }
 }
