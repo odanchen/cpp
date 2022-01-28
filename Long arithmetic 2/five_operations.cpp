@@ -4,110 +4,161 @@ using namespace::std;
 
 const int nmax = 4000;
 
-struct Tlong
+class Tlong
 {
+public:
+    Tlong();
+    Tlong(int b);
+    
+    int get_len();
+    void input();
+    void print();
+    int compare(Tlong &b);
+    int compare_to_0();
+    Tlong operator+(Tlong &b);
+    Tlong operator-(Tlong b);
+    Tlong operator*(int b);
+    Tlong operator*(Tlong &b);
+    Tlong operator/(int b);
+    Tlong operator/(Tlong &b);
+    Tlong operator%(Tlong &b);
+    int operator%(int &b);
+    Tlong operator++();
+    Tlong operator--();
+private:
     char sign = '+';
-    int number[nmax] = {0};
+    int number[nmax + 1];
     int len = 1;
+    Tlong add_abs(Tlong &b);
+    Tlong sub_abs(Tlong &b);
+    void clear_num();
+    int compare_abs(Tlong &b);
 };
 
-bool iszero(Tlong a)
+Tlong::Tlong()
 {
-    return a.len == 1 && a.number[nmax - 1] == 0;
-}
-
-
-void clear_num(Tlong num)
-{
+    sign = '+';
+    len = 1;
     for (int i = 0; i < nmax; i++)
-        num.number[i] = 0;
-    num.len = 1;
+        number[i] = 0;
 }
 
-int get_len(Tlong a)
+Tlong::Tlong(int b)
 {
-    int i=0;
-    while(a.number[i] == 0 && i < nmax) i++;
+    if (b < 0) sign = '-';
+    else sign = '+';
+    
+    b = abs(b);
+    
+    for (int i = 0; i < nmax; i++)
+        number[i] = 0;
+    
+    int cnt = 0;
+    
+    while(b != 0)
+    {
+        cnt++;
+        number[nmax - cnt] = b % 10;
+        b /= 10;
+    }
+    len = cnt;
+}
+
+void Tlong::clear_num()
+{
+    sign = '+';
+    for (int i = 0; i <= nmax; i++)
+        number[i] = 0;
+    len = 1;
+}
+
+int Tlong::get_len()
+{
+    int i = 0;
+    while(number[i] == 0 && i < nmax) i++;
     if (i == nmax) return 1;
     return nmax - i;
 }
 
-void input_number(Tlong &num)
+void Tlong::input()
 {
+    clear_num();
     string S;
     cin >> S;
-    if (S[0] == '-')
+    if (S[0] == '-' || S[0] == '+')
     {
-        num.sign = '-';
-        S.erase(0, 1);
-    }
-    else if (S[0] == '+')
-    {
-        num.sign = '+';
+        sign = S[0];
         S.erase(0, 1);
     }
     else
-        num.sign = '+';
+        sign = '+';
     int length = (int)S.size();
     for (int i = 0; i < length - 1 && S[0] == '0'; i++)
         S.erase(0, 1);
-    num.len = (int)S.size();
+    len = (int)S.size();
     if (S[0] == '0')
-        num.sign = '+';
-    clear_num(num);
+        sign = '+';
     int k = 0;
-    for(int i = nmax - num.len; i < nmax; i++)
+    for(int i = nmax - len; i < nmax; i++)
     {
-        num.number[i] = S[k] - '0';
+        number[i] = S[k] - '0';
         k++;
     }
-    
 }
 
-int compare_abs(Tlong a, Tlong b)
+void Tlong::print()
 {
-    if (a.len > b.len) return 1;
-    if (a.len < b.len) return -1;
-    for (int i = nmax - a.len; i < nmax; i++)
+    if (len == 0) len = 1;
+    if (len == 1 && number[nmax - 1] == 0) sign = '+';
+    if (sign == '-') cout << '-';
+    for (int i = nmax - len; i < nmax; i++)
+        cout << number[i];
+}
+
+int Tlong::compare_abs(Tlong &b)
+{
+    if (len > b.len) return 1;
+    if (len < b.len) return -1;
+    for (int i = nmax - len; i < nmax; i++)
     {
-        if (a.number[i] > b.number[i]) return 1;
-        if (a.number[i] < b.number[i]) return -1;
+        if (number[i] > b.number[i]) return 1;
+        if (number[i] < b.number[i]) return -1;
     }
     return 0;
 }
 
-int compare(Tlong a, Tlong b)
+int Tlong::compare(Tlong &b)
 {
-    if (a.sign == '+' && b.sign == '-') return 1;
-    if (a.sign == '-' && b.sign == '+') return -1;
-    if (a.sign == '+' && b.sign == '+') return compare_abs(a, b);
-    if (a.sign == '-' && b.sign == '-') return -compare_abs(a, b);
+    if (sign == '+' && b.sign == '-') return 1;
+    if (sign == '-' && b.sign == '+') return -1;
+    if (sign == '+' && b.sign == '+') return compare_abs(b);
+    if (sign == '-' && b.sign == '-') return -compare_abs(b);
     return 0;
 }
 
-Tlong add_abs(Tlong a, Tlong b)
+Tlong Tlong::add_abs(Tlong &b)
 {
     Tlong res;
     int sum, rest = 0;
-    int len = max(a.len,b.len);
-    for (int i = nmax - 1; i >= nmax - len - 1; i--)
+    int length = max(len, b.len);
+    for (int i = nmax - 1; i >= nmax - length - 1; i--)
     {
-        sum = a.number[i] + b.number[i] + rest;
+        sum = number[i] + b.number[i] + rest;
         res.number[i] = sum % 10;
         rest = sum / 10;
     }
-    res.len = get_len(res);
+    res.len = res.get_len();
     return res;
 }
 
-Tlong sub_abs(Tlong a, Tlong b)
+Tlong Tlong::sub_abs(Tlong &b)
 {
     Tlong res;
     int borrow = 0;
-    int len = max(a.len, b.len);
-    for (int i = nmax - 1; i >= nmax - len; i--)
+    int length = max(len, b.len);
+    for (int i = nmax - 1; i >= nmax - length; i--)
     {
-        res.number[i] = a.number[i] - b.number[i] - borrow;
+        res.number[i] = number[i] - b.number[i] - borrow;
         if (res.number[i] < 0)
         {
             res.number[i] += 10;
@@ -115,119 +166,212 @@ Tlong sub_abs(Tlong a, Tlong b)
         }
         else borrow = 0;
     }
-    res.len = get_len(res);
+    res.len = res.get_len();
     return res;
 }
 
-Tlong add(Tlong a, Tlong b)
+Tlong Tlong::operator+(Tlong &b)
 {
     Tlong res;
-    if (a.sign == b.sign)
+    if (sign == b.sign)
     {
-        res = add_abs(a,b);
-        res.sign=a.sign;
+        res = add_abs(b);
+        res.sign = sign;
     }
-    else if (compare_abs(a, b) == 1)
+    else if (compare_abs(b) == 1)
         {
-            res = sub_abs(a, b);
-            res.sign = a.sign;
+            res = sub_abs(b);
+            res.sign = sign;
         }
-        else if (compare_abs(a, b) == -1)
+        else if (compare_abs(b) == -1)
         {
-            res = sub_abs(b, a);
+            res = b.sub_abs(*this);
             res.sign = b.sign;
         }
     return res;
 }
 
-Tlong sub(Tlong a, Tlong b)
+Tlong Tlong::operator-(Tlong b)
 {
-    if(b.sign == '-') b.sign = '+';
-    else b.sign = '-';
-    return add(a, b);
+    if (b.sign == '-')
+        b.sign = '+';
+    else
+        b.sign = '-';
+    return *this + b;
 }
 
-Tlong half_multiply(Tlong a, int b)
+Tlong Tlong::operator++()
+    {
+        int i=1;
+        if (sign=='+')
+        {
+            while(number[nmax-i]==9)
+            {
+                number[nmax-i]=0;
+                ++i;
+            }
+            ++number[nmax-i];
+        }
+        else
+        {
+            while (number[nmax-i]==0)
+            {
+                number[nmax-i]=9;
+                ++i;
+            }
+            --number[nmax-i];
+            if(len == 1 && number[nmax-1] == 0) sign='+';
+        }
+        if (i>len) ++len;
+        return *this;
+    }
+
+Tlong Tlong::operator--()
+{
+    Tlong one;
+    one.number[nmax - 1] = 1;
+    one.len = 1;
+    *this = *this - one;
+    return *this;
+}
+
+Tlong Tlong::operator*(int b)
 {
     Tlong res;
     int p = 0, S;
-    if ((b > 0 && a.sign == '-') || (b < 0 && a.sign == '+'))
+    if ((b > 0 && sign == '-') || (b < 0 && sign == '+'))
         res.sign='-';
     b=abs(b);
-    for (int i = nmax - 1; i >= nmax - a.len - 10; i--)
+    for (int i = nmax - 1; i >= nmax - len - 10; i--)
     {
-        S = a.number[i] * b + p;
+        S = number[i] * b + p;
         res.number[i] = S % 10;
         p = S / 10;
     }
-    res.len = get_len(res);
+    res.len = res.get_len();
     return res;
 }
 
-Tlong factorial(int num)
-{
-    Tlong res;
-    res.number[nmax - 1] = 1;
-    res.len = 1;
-    res.sign = '+';
-    for (int i = 2; i <= num; i++)
-        res = half_multiply(res, i);
-    return res;
-}
-
-Tlong multiply(Tlong a, Tlong b)
+Tlong Tlong::operator*(Tlong &b)
 {
     Tlong res;
     int p = 0, temp;
-    for (long long i = nmax - 1; i >= nmax - a.len; i--)
+    for (long long i = nmax - 1; i >= nmax - len; i--)
         for (long long j = nmax - 1; j >= nmax - b.len - 1; j--)
         {
-            temp = a.number[i] * b.number[j] + p + res.number[j + i - (nmax - 1)];
+            temp = number[i] * b.number[j] + p + res.number[j + i - (nmax - 1)];
             res.number[j + i - (nmax - 1)] = temp % 10;
             p = temp / 10;
         }
-    if (a.sign == b.sign)
+    if (sign == b.sign)
         res.sign = '+';
     else
         res.sign = '-';
-    res.len = get_len(res);
+    res.len = res.get_len();
     return res;
 }
 
-Tlong divide(Tlong a, Tlong b, Tlong &rest)
+Tlong Tlong::operator/(Tlong &b)
 {
     Tlong res;
+    Tlong rest;
     rest.len = 1;
-    for (int i = nmax - a.len; i < nmax; i++)
+    for (int i = nmax - len; i < nmax; i++)
     {
         if (rest.len != 1 || rest.number[nmax - 1] != 0) rest.len++;
         for (int j = nmax - rest.len; j < nmax; j++)
             rest.number[j - 1] = rest.number[j];
-        rest.number[nmax - 1] = a.number[i];
+        rest.number[nmax - 1] = number[i];
         int counter = 0;
-        while(compare_abs(rest, b) >= 0)
+        while(rest.compare_abs(b) >= 0)
         {
-            rest = sub_abs(rest, b);
+            rest = rest.sub_abs(b);
             counter++;
         }
         res.number[i] = counter;
     }
-    res.len = get_len(res);
-    rest.len = get_len(rest);
-    if (a.sign == b.sign) res.sign = '+';
+    res.len = res.get_len();
+    if (sign == b.sign) res.sign = '+';
     else
         res.sign = '-';
-    rest.sign = a.sign;
     return res;
 }
 
-void print_num(Tlong num)
+Tlong Tlong::operator/(int b)
 {
-    if (num.len == 0) num.len = 1;
-    if (num.len == 1 && num.number[nmax - 1] == 0) num.sign = '+';
-    if (num.sign == '-') cout << '-';
-    for (int i = nmax - num.len; i < nmax; i++)
-        cout << num.number[i];
+    Tlong res;
+    int rest = 0;
+    if ((sign == '-' && b >= 0) || (sign == '+' && b <= 0))
+        res.sign = '-';
+    b = abs(b);
+    for (int i = nmax - len; i < nmax; i++)
+    {
+        rest = rest * 10 + number[i];
+        res.number[i] = rest / b;
+        
+        rest = rest % b;
+    }
+    res.len = res.get_len();
+    return res;
+}
+
+Tlong Tlong::operator%(Tlong &b)
+{
+    Tlong res;
+    Tlong rest;
+    rest.len = 1;
+    for (int i = nmax - len; i < nmax; i++)
+    {
+        if (rest.len != 1 || rest.number[nmax - 1] != 0) rest.len++;
+        for (int j = nmax - rest.len; j < nmax; j++)
+            rest.number[j - 1] = rest.number[j];
+        rest.number[nmax - 1] = number[i];
+        int counter = 0;
+        while(rest.compare_abs(b) >= 0)
+        {
+            rest = rest.sub_abs(b);
+            counter++;
+        }
+        res.number[i] = counter;
+    }
+    rest.len = rest.get_len();
+    rest.sign = sign;
+    return rest;
+}
+
+int Tlong::operator%(int &dil)
+{
+    int remainder = 0;
+    for (int i = nmax - len; i < nmax; i += 0)
+    {
+        if (remainder < dil)
+        {
+            remainder *= 10;
+            remainder += number[i];
+            i++;
+        }
+        else
+            remainder %= dil;
+    }
+    return remainder % dil;
+}
+
+int Tlong::compare_to_0()
+{
+    if (len == 0) len = 1;
+    if (len == 1 && number[nmax - 1] == 0) sign = '+';
+    
+    if (sign == '-') return -1;
+    if (len == 1 && number[nmax - 1] == 0) return 0;
+    return 1;
+}
+
+Tlong factorial(int num)
+{
+    Tlong res (1);
+    for (int i = 2; i <= num; i++)
+        res = res * i;
+    return res;
 }
 
 int main()
@@ -238,90 +382,87 @@ int main()
     Tlong num1, num2, result, ost;
     int num3;
     
-    input_number(num1);
-    input_number(num2);
+    num1.input();
+    num2.input();
     cin >> num3;
     
     
-    print_num(num1);
+    num1.print();
     cout << '+';
-    if (num2.sign == '-')
+    if (num2.compare_to_0() == -1)
     {
         cout << '(';
-        print_num(num2);
+        num2.print();
         cout << ')';
     }
     else
-        print_num(num2);
+        num2.print();
     cout << '=';
-    result = add(num1, num2);
-    print_num(result);
-    clear_num(result);
+    result = num1 + num2;
+    result.print();
     cout << '\n';
     
     
-    print_num(num1);
+    num1.print();
     cout << '-';
-    if (num2.sign == '-')
+    if (num2.compare_to_0() == -1)
     {
         cout << '(';
-        print_num(num2);
+        num2.print();
         cout << ')';
     }
     else
-        print_num(num2);
+        num2.print();
     cout << '=';
-    result = sub(num1, num2);
-    print_num(result);
-    clear_num(result);
+    result = num1 - num2;
+    result.print();
     cout << '\n';
     
     
-    print_num(num1);
+    num1.print();
     cout << '*';
-    if (num2.sign == '-')
+    if (num2.compare_to_0() == -1)
     {
         cout << '(';
-        print_num(num2);
+        num2.print();
         cout << ')';
     }
     else
-        print_num(num2);
+        num2.print();
     cout << '=';
-    result = multiply(num1, num2);
-    print_num(result);
-    clear_num(result);
+    result = num1 * num2;
+    result.print();
     cout << '\n';
     
     
-    if (num2.len == 1 && num2.number[nmax - 1] == 0)
+    if (num2.compare_to_0() == 0)
         cout << "Division by zero." << '\n';
     else
     {
-        print_num(num1);
+        num1.print();
         cout << '/';
-        if (num2.sign == '-')
+        if (num2.compare_to_0() == -1)
         {
             cout << '(';
-            print_num(num2);
+            num2.print();
             cout << ')';
         }
         else
-            print_num(num2);
+            num2.print();
         cout << '=';
-        result = divide(num1, num2, ost);
-        print_num(result);
+        result = num1 / num2;
+        result.print();
         cout << ' ' << '(';
-        print_num(ost);
+        ost = num1 % num2;
+        ost.print();
         cout << ')';
-        clear_num(result);
         cout << '\n';
     }
     
     
     cout << num3 << "!=";
     result = factorial(num3);
-    print_num(result);
+    result.print();
     
     return 0;
 }
