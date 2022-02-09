@@ -3,13 +3,12 @@
 
 using namespace::std;
 
-void fill_arr(int arr[], bool &status, ofstream file)
+void fill_arr(int arr[], bool &status, ifstream& file)
 {
     status = false;
     string S;
-    while(!file.eof())
+    while(getline(file, S))
     {
-        getline(cin, S);
         for (int i = 0; i < S.size(); i++)
             if (isalpha(S[i]))
             {
@@ -21,18 +20,22 @@ void fill_arr(int arr[], bool &status, ofstream file)
 
 int main()
 {
-    ofstream file;
-    file.open("analiz.in");
-    int letters[128];
+    ifstream input("analiz.in");
+    ofstream output("analiz.out");
+    int letters[128] = {0};
     bool status;
-    fill_arr(letters, status, file);
-    if (status == true)
+    
+    fill_arr(letters, status, input);
+    input.close();
+    
+    if (status)
     {
         for(char i = 'A'; i <= 'Z'; i++)
         {
-            cout << i << ' ' << letters[i] << '\n';
+            output << i << ' ' << letters[i] << '\n';
         }
     }
     else
-        cout << -1;
+        output << -1;
+    output.close();
 }
