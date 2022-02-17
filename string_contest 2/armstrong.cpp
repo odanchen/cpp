@@ -19,27 +19,17 @@ string find_word(string S, int &start_idx, string separators)
 
 bool is_numeric(string S)
 {
+    if (S.size() == 0) return false;
     for (int i = 0; i < S.size(); i++)
         if (not(isdigit(S[i]))) return false;
     return true;
-}
-
-int str_to_int(string S)
-{
-    int sum = 0, grade = 1;
-    for (int i = 0; i < S.size(); i++)
-    {
-        sum += (S[S.size() - i - 1] - '0') * grade;
-        grade *= 10;
-    }
-    return sum;
 }
 
 bool is_armstrong(string S)
 {
     if (not(is_numeric(S))) return false;
     
-    int len = (int)S.size(), num = str_to_int(S), sum = 0;
+    int len = (int)S.size(), num = stoi(S), sum = 0;
     int grade = 10;
     for(int i = 0; i < len; i++)
     {
@@ -55,7 +45,7 @@ int main()
     freopen("armstrong.in", "r", stdin);
     freopen("armstrong.out", "w", stdout);
     
-    string separators = " .,;:!?\"[]";
+    string separators = ".,;:!?\"[] \n\t\v\f\r";
     string S;
     bool no_armstrong = true;
     
@@ -73,6 +63,7 @@ int main()
                 no_armstrong = false;
             }
         }
+        start_idx = 0;
     }
     
     if (no_armstrong) cout << -1;
