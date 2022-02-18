@@ -20,25 +20,27 @@ bool is_polindromic(string &S)
 {
     int p1 = 0, p2 = S.size() - 1;
     if (S.empty()) return false;
+    bool found = false;
         
-    while(p1 < p2)
+    while(p1 <= p2)
     {
         
-        while(not(isalpha(S[p1])) && p1 < p2)
+        while(not(isalpha(S[p1])) && p1 <= p2)
             p1++;
         
-        while(not(isalpha(S[p2])) && p2 > p1)
+        while(not(isalpha(S[p2])) && p2 >= p1)
             p2--;
         
         if(toupper(S[p1]) == toupper(S[p2]))
         {
             p1++;
             p2--;
+            found = true;
         }
         else return false;
     }
     
-    return true;
+    return found;
 }
 
 int main()
@@ -47,25 +49,24 @@ int main()
     freopen("palindrom.out", "w", stdout);
     
     string S;
-    string separators = "!.?\n\t\v\f\r";
-    bool is_pol = true;
+    string separators = "!.?";
+    string phrase;
+    bool found = false;
     
+    int pos = 0;
     while(getline(cin, S))
     {
-        int start_idx = 0;
-        
-        while(start_idx < S.size() -1)
+        while(pos < S.size() - 1)
         {
-            string phrase = find_phrase(S, start_idx, separators);
-
-            if (is_polindromic(phrase))
+            phrase = find_phrase(S, pos, separators);
+            if(is_polindromic(phrase))
             {
-                is_pol = false;
                 cout << phrase << '\n';
+                found = true;
             }
         }
+        pos = 0;
     }
-    
-    if (is_pol) cout << -1;
+    if(not(found)) cout<< -1;
+    return 0;
 }
-
