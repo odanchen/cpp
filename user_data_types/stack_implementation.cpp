@@ -49,8 +49,7 @@ void clear(Stack *&head)
 {
     while (head != NULL)
     {
-        Stack *temporary_top = new Stack;
-        temporary_top = head;
+        Stack *temporary_top = head;
         head = head->prev;
         delete temporary_top;
     }
