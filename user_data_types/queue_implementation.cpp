@@ -70,12 +70,12 @@ int size(Queue *&head, Queue *&tail)
     
     int cnt = 0;
     Queue *temp = tail;
-    while(temp != NULL)
+    while(temp != head)
     {
         temp = temp->right;
         cnt++;
     }
-    return cnt;
+    return cnt + 1;
 }
 
 int main()
