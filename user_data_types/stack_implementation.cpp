@@ -1,4 +1,3 @@
-
 #include<iostream>
 
 using namespace::std;
@@ -10,58 +9,58 @@ struct Stack
     int size = 0;
 };
 
-void push(Stack *&top, int value)
+void push(Stack *&head, int value)
 {
     Stack *temporary_top = new Stack;
     
     temporary_top->value = value;
-    temporary_top->prev = top;
+    temporary_top->prev = head;
     
     if (temporary_top->prev == NULL)temporary_top->size = 1;
     else temporary_top->size = temporary_top->prev->size + 1;
     
-    top = temporary_top;
+    head = temporary_top;
 }
 
-bool isEmpty(Stack *&top)
+bool isEmpty(Stack *&head)
 {
-    return (top == NULL);
+    return (head == NULL);
 }
 
-void pop(Stack *&top)
+void pop(Stack *&head)
 {
-    if (top->prev == NULL)
+    if (head->prev == NULL)
     {
-        top = NULL;
+        head = NULL;
         return;
     }
     
-    Stack *temporary_top = top;
-    top = top->prev;
+    Stack *temporary_top = head;
+    head = head->prev;
     delete temporary_top;
 }
 
-int back(Stack *&top)
+int back(Stack *&head)
 {
-    return top->value;
+    return head->value;
 }
 
-void clear(Stack *&top)
+void clear(Stack *&head)
 {
-    while (top != NULL)
+    while (head != NULL)
     {
         Stack *temporary_top = new Stack;
-        temporary_top = top;
-        top = top->prev;
+        temporary_top = head;
+        head = head->prev;
         delete temporary_top;
     }
-    delete top;
+    delete head;
 }
 
-int size(Stack *&top)
+int size(Stack *&head)
 {
-    if (top == NULL) return 0;
-    return top->size;
+    if (head == NULL) return 0;
+    return head->size;
 }
 
 int main()
