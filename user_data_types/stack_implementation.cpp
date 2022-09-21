@@ -66,7 +66,7 @@ int size(Stack *&top)
 
 int main()
 {
-    Stack *performer = NULL;
+    Stack *head = NULL;
     string command = "";
     int value;
     
@@ -77,33 +77,33 @@ int main()
         if (command == "push")
         {
             cin >> value;
-            push(performer, value);
+            push(head, value);
             cout << "ok" << '\n';
         }
         
         else if (command == "pop")
         {
-            if (isEmpty(performer)) cout << "error" << '\n';
+            if (isEmpty(head)) cout << "error" << '\n';
             else
             {
-                cout << back(performer) << '\n';
-                pop(performer);
+                cout << back(head) << '\n';
+                pop(head);
             }
         }
         
         else if (command == "back")
         {
-            if (isEmpty(performer)) cout << "error" << '\n';
-            else cout << back(performer) << '\n';
+            if (isEmpty(head)) cout << "error" << '\n';
+            else cout << back(head) << '\n';
         }
         
         else if (command == "clear")
         {
-            clear(performer);
+            clear(head);
             cout << "ok" << '\n';
         }
         
-        else if (command == "size") cout << size(performer) << '\n';
+        else if (command == "size") cout << size(head) << '\n';
     }
     cout << "bye";
 }
