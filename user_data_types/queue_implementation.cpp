@@ -56,8 +56,7 @@ void clear(Queue *&head, Queue *&tail)
 {
     while (head != tail)
     {
-        Queue *temporary_top = new Queue;
-        temporary_top = head;
+        Queue *temporary_top = head;
         head = head->left;
         delete temporary_top;
     }
