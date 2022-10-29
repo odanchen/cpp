@@ -8,7 +8,7 @@ int main()
     cin.tie(0);
     cout.tie(0);
     
-    int scores[200000] = {0};
+    int scores[200001] = {0};
     int contestants, friends;
     
     cin >> contestants >> friends;
@@ -17,17 +17,17 @@ int main()
     {
         int score;
         cin >> score;
-        scores[score]--;
+        scores[score]++;
     }
     
     int rank = 1;
     
-    for (int i = 200000 - 1; i >= 0 ; i--)
+    for (int i = 200000; i >= 0 ; i--)
     {
-        if(scores[i] < 0)
+        if(scores[i] > 0)
         {
             int temp = rank;
-            rank += abs(scores[i]);
+            rank += scores[i];
             scores[i] = temp;
         }
     }
