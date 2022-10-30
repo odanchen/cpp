@@ -10,14 +10,14 @@ long long countPairs(long long n)
     return (n + (n * (n - 3) / 2));
 }
 
-long long countSpookyPairs(long long song0[], long long song1[], long long song2[], long long song3[], long long left, long long right)
+long long countSpookyPairs(long long song[][4], long long left, long long right)
 {
     long long ans = 0;
     
-    ans += countPairs(song0[right] - song0[left - 1]);
-    ans += countPairs(song1[right] - song1[left - 1]);
-    ans += countPairs(song2[right] - song2[left - 1]);
-    ans += countPairs(song3[right] - song3[left - 1]);
+    ans += countPairs(song[right][0] - song[left - 1][0]);
+    ans += countPairs(song[right][1] - song[left - 1][1]);
+    ans += countPairs(song[right][2] - song[left - 1][2]);
+    ans += countPairs(song[right][3] - song[left - 1][3]);
 
     return ans;
 }
@@ -30,47 +30,19 @@ int main()
     
     long long songLen, sampleCnt;
     cin >> songLen >> sampleCnt;
-    long long song0[songLen + 1], song1[songLen + 1], song2[songLen + 1], song3[songLen + 1];
+    long long song[songLen + 1][4];
+    
+    for (int i = 0; i < 4; i++) song[0][i] = 0;
     
     for (int i = 1; i <= songLen; i++)
     {
         long long note;
         cin >> note;
-        note = note % 4;
-        song1[0] = 0;
-        song2[0] = 0;
-        song3[0] = 0;
-        song0[0] = 0;
-    
-        if (note == 0)
-        {
-            song1[i] = song1[i - 1];
-            song2[i] = song2[i - 1];
-            song3[i] = song3[i - 1];
-            song0[i] = song0[i - 1] + 1;
-        }
-        if (note == 1)
-        {
-            song1[i] = song1[i - 1] + 1;
-            song2[i] = song2[i - 1];
-            song3[i] = song3[i - 1];
-            song0[i] = song0[i - 1];
-        }
-        if (note == 2)
-        {
-            song1[i] = song1[i - 1];
-            song2[i] = song2[i - 1] + 1;
-            song3[i] = song3[i - 1];
-            song0[i] = song0[i - 1];
-        }
-        if (note == 3)
-        {
-            song1[i] = song1[i - 1];
-            song2[i] = song2[i - 1];
-            song3[i] = song3[i - 1] + 1;
-            song0[i] = song0[i - 1];
-        }
         
+        song[i][note % 4] = song[i - 1][note % 4] + 1;
+        song[i][((note % 4) + 1) % 4] = song[i - 1][((note % 4) + 1) % 4];
+        song[i][((note % 4) + 2) % 4] = song[i - 1][((note % 4) + 2) % 4];
+        song[i][((note % 4) + 3) % 4] = song[i - 1][((note % 4) + 3) % 4];
     }
     
     for(int i = 0; i < sampleCnt; i++)
@@ -78,6 +50,6 @@ int main()
         long long left, right;
         cin >> left >> right;
         
-        cout << countSpookyPairs(song0, song1, song2, song3, left, right) << '\n';
+        cout << countSpookyPairs(song, left, right) << '\n';
     }
 }
