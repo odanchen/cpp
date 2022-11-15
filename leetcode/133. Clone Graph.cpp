@@ -3,9 +3,9 @@
         Node *nbr = new Node(val);
         nodeMap.insert(pair<int, Node*>(val, nbr));
     }
-    Node* traverse(Node* node, set<int> &visitedMap, map<int, Node*> &nodeMap)
+    void traverse(Node* node, set<int> &visitedMap, map<int, Node*> &nodeMap)
     {
-        if(visitedMap.find(node->val) != visitedMap.end()) return nullptr;
+        if(visitedMap.find(node->val) != visitedMap.end()) return;
 
         if (nodeMap.find(node->val) == nodeMap.end()) addNode(node->val, nodeMap);        
 
@@ -17,12 +17,13 @@
         visitedMap.insert(node->val);
         for (Node *neighbor : node->neighbors) traverse(neighbor, visitedMap, nodeMap);
 
-        return nodeMap.at(1);
+        return;
     }
     Node* cloneGraph(Node* node) {
         if (node == NULL) return nullptr;
 
         set<int> visitedMap;
         map<int, Node*> nodeMap;
-        return traverse(node, visitedMap, nodeMap);
+        traverse(node, visitedMap, nodeMap);
+        return nodeMap.at(node->val);
     }
