@@ -12,7 +12,6 @@
             fill(row - 1, col, color, image, startColor);
     }
     vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
-        vector<vector<int>> ans = image;
-        if (color != image[sr][sc]) fill(sr, sc, color, ans, image[sr][sc]);
-        return ans;
+        if (color != image[sr][sc]) fill(sr, sc, color, image, image[sr][sc]);
+        return image;
     }
