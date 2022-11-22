@@ -1,11 +1,10 @@
     int arraySign(vector<int>& nums) {
-        int neg = 0;
+        bool neg = false;
         for (int element : nums)
         {
             if (element == 0) return 0;
-            if (element < 0) neg++;
+            if (element < 0) neg = !neg;
         }
 
-        if (neg % 2 == 1) return -1;
-        return 1;
+        return neg ? -1 : 1;
     }
