@@ -44,12 +44,10 @@
         for (vector<int> curEdge : redEdges) nodes[curEdge[0]]->edges.push_back(new Node::Edge(nodes[curEdge[1]], red));
         for (vector<int> curEdge : blueEdges) nodes[curEdge[0]]->edges.push_back(new Node::Edge(nodes[curEdge[1]], blue));
 
-        addNodes(pathNode(nodes[0], neither), nodeQueue, toVisit);
-        nodes[0]->path = 0;
+        nodeQueue.push(pathNode(nodes[0], neither)); toVisit = 1;
 
         while(not(nodeQueue.empty()))
         {
-            turn++;
             for (int i = 0; i < toVisit; i++)
             {
                 pathNode cur = nodeQueue.front();
@@ -59,6 +57,7 @@
             }
             toVisit = nextTurn;
             nextTurn = 0;
+            turn++;
         }
         
         vector<int> ans(n);
