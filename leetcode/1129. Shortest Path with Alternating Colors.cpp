@@ -1,5 +1,6 @@
     const char red = 'R';
     const char blue = 'B';
+    const char neither = 'N';
 
     struct Node
     {
@@ -36,25 +37,16 @@
 
     vector<int> shortestAlternatingPaths(int n, vector<vector<int>>& redEdges, vector<vector<int>>& blueEdges) {
         vector<Node*> nodes(n);
-        for (int i = 0; i < nodes.size(); i++) nodes[i] = new Node;
-        for (vector<int> curEdge : redEdges)
-        {
-            nodes[curEdge[0]]->edges.push_back(new Node::Edge(nodes[curEdge[1]], red));
-        }
-        for (vector<int> curEdge : blueEdges)
-        {
-            nodes[curEdge[0]]->edges.push_back(new Node::Edge(nodes[curEdge[1]], blue));
-        }
         queue<pathNode> nodeQueue;
         int turn = 0, toVisit = 0, nextTurn = 0;
-        for (Node::Edge* edge : nodes[0]->edges)
-        {
-            nodeQueue.push(pathNode(edge->finish, edge->color));
-            edge->visited = true;
-        }
+
+        for (int i = 0; i < nodes.size(); i++) nodes[i] = new Node;
+        for (vector<int> curEdge : redEdges) nodes[curEdge[0]]->edges.push_back(new Node::Edge(nodes[curEdge[1]], red));
+        for (vector<int> curEdge : blueEdges) nodes[curEdge[0]]->edges.push_back(new Node::Edge(nodes[curEdge[1]], blue));
+
+        addNodes(pathNode(nodes[0], neither), nodeQueue, toVisit);
         nodes[0]->path = 0;
-        toVisit = (int)nodes[0]->edges.size();
-        
+
         while(not(nodeQueue.empty()))
         {
             turn++;
