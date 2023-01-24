@@ -1,3 +1,5 @@
+class Solution {
+public:
     string intToRoman(int num) {
         vector<string> map1 = {"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII","IX"};
         vector<string> map2 = {"", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX","XC"};
@@ -12,3 +14,4 @@
 
         return ans;
     }
+};
