@@ -1,3 +1,5 @@
+class Solution {
+public:
     struct cord
     {
         int row;
@@ -66,3 +68,4 @@
 
         return visMatrix;
     }
+};
