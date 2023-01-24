@@ -1,3 +1,5 @@
+class Solution {
+public:
     int removeDuplicates(vector<int>& nums) {
         if (nums.empty()) return 0;
         int correctPart = 1, curMax = nums[0];
@@ -14,3 +16,4 @@
 
         return correctPart;
     }
+};
