@@ -1,5 +1,7 @@
+class Solution {
+public:
     int rob(vector<int>& nums) {
-        vector<vector<int>> matrix((nums.size() + 4) / 3, vector<int>((nums.size() + 1) / 2 + 1));
+        vector<vector<int>> matrix(((nums.size() + 4) / 3), vector<int>((nums.size() + 1) / 2 + 1));
 
         for (int row = 0; row < matrix.size(); row++)
         {
@@ -26,3 +28,4 @@
 
         return matrix.back().back();
     }
+};
