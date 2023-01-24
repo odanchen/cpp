@@ -1,3 +1,5 @@
+class Solution {
+public:
     struct Node
     {
         string word;
@@ -69,3 +71,4 @@
         }
         return minPath(wordBank.at(beginWord), wordBank.at(endWord)) + 1;
     }
+};
