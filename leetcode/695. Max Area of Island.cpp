@@ -1,3 +1,5 @@
+class Solution {
+public:
     void fill(int row, int col, vector<vector<int>>& grid, int &cnt)
     {
         if (grid[row][col] == 1) 
@@ -31,3 +33,4 @@
         }
         return ans;
     }
+};
