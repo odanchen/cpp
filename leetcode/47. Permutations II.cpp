@@ -1,3 +1,5 @@
+class Solution {
+public:
     void addPermutation(int &level, set<vector<int>> &ans, vector<int> arr)
     {
         if (level == arr.size() - 1)
@@ -23,3 +25,4 @@
         for (vector<int> element : unique) ans.push_back(element);
         return ans;
     }   
+};
