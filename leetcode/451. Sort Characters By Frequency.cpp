@@ -1,3 +1,5 @@
+class Solution {
+public:
     struct hashLetter
     {
         char letter = '-';
@@ -43,3 +45,4 @@
         }
         return ans;
     }
+};
