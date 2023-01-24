@@ -1,3 +1,5 @@
+class Solution {
+public:
     struct Node
     {
         vector<Node*> neighbors;
@@ -39,3 +41,4 @@
         }
         return provinceNum;
     }
+};
