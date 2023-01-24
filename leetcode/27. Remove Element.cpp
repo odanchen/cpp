@@ -1,3 +1,5 @@
+class Solution {
+public:
     int removeElement(vector<int>& nums, int val) {
         int cnt = 0;
         queue<int> idxs;
@@ -19,3 +21,4 @@
 
         return cnt;
     }
+};
