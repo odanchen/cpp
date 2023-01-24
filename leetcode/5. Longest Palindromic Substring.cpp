@@ -1,4 +1,6 @@
-   int expand(string s, int l, int r)
+class Solution {
+public:
+    int expand(string s, int l, int r)
     {
         int R = r, L = l;
         if(s[R] != s[L]) return 0;
@@ -26,3 +28,4 @@
         }
         return s.substr(leftIdx, maxLen);
     }
+};
