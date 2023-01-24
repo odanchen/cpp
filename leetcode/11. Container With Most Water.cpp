@@ -1,3 +1,5 @@
+class Solution {
+public:
     int getArea(int idx1, int idx2, vector<int> &height)
     {
         return (idx2 - idx1) * min(height[idx1], height[idx2]);
@@ -14,3 +16,4 @@
 
         return ans;
     }
+};
