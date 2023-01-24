@@ -1,3 +1,5 @@
+class Solution {
+public:
     struct Node
     {
         string gene;
@@ -69,3 +71,4 @@
         }
         return minPath(geneNodes.at(start), geneNodes.at(end));
     }
+};
