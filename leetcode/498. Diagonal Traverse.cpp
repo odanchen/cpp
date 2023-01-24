@@ -1,3 +1,5 @@
+class Solution {
+public:
     void moveUp(int &row, int &col)
     {
         row--;
@@ -64,3 +66,4 @@
 
         return ans;
     }
+};
