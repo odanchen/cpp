@@ -1,3 +1,5 @@
+class Solution {
+public:
     struct course
     {
         bool completion = false;
@@ -46,3 +48,4 @@
         if (incompleteCourses.empty()) return ans;
         return vector<int>({});   
     }
+};
