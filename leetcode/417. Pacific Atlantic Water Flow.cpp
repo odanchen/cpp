@@ -1,3 +1,5 @@
+class Solution {
+public:
     const int land = 1;
     const int water = 0;
     struct cord
@@ -87,3 +89,4 @@
         } 
         return ans;
     }
+};
