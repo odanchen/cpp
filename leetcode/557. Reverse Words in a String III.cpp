@@ -1,3 +1,5 @@
+class Solution {
+public:
     void reverse(string &s, int i, int j)
     {
         while(i < j)
@@ -20,3 +22,4 @@
 
         return s;
     }
+};
