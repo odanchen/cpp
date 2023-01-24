@@ -1,3 +1,5 @@
+class Solution {
+public:
     bool isInside(int row, int col, vector<vector<char>> &grid)
     {
         return (row >= 0 && col >= 0 && row < grid.size() && col < grid[row].size());
@@ -28,3 +30,4 @@
         }
         return cnt;
     }
+};
