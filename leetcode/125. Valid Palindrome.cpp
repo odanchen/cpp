@@ -1,4 +1,6 @@
-   bool isPalindrome(string s) {
+class Solution {
+public:
+    bool isPalindrome(string s) {
         int i = 0, j = s.size() - 1;
         while(i < j)
         {
@@ -14,3 +16,4 @@
 
         return true;
     }
+};
