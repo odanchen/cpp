@@ -1,11 +1,16 @@
-    void rotate(vector<int>& nums, int k) {
-        vector<int> ans(nums.size());
-        k = k % nums.size();
-        for(int i = 0; i < nums.size(); i++)
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& numbers, int target) {
+        int left, right;
+        left = 0;
+        right = numbers.size() - 1;
+
+        while(numbers[left] + numbers[right] != target)
         {
-            int idx = (int)nums.size() - k + i;
-            ans[i] = nums[idx % nums.size()];
+            if(numbers[left] + numbers[right] > target) right--;
+            else left++;
         }
 
-        nums = ans;
+        return (vector<int>) {left + 1, right + 1};
     }
+};
