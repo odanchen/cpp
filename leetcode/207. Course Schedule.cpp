@@ -1,43 +1,39 @@
-    struct course
-    {
-        bool completion = false;
-        vector<course*> requirements;
-    };
-    bool isReachable(course *cur)
-    {
-        if (cur->requirements.empty()) return true;
-
-        for (course* prerequisite : cur->requirements)
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode *ans, *cur;
+        if (head == NULL) return NULL;
+        stack<int> values;
+        while(head != NULL)
         {
-            if (prerequisite->completion == false) return false;
+            values.push(head->val);
+            head = head->next;
         }
-        return true;
-    }
-    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
-        vector<course*> courses(numCourses);
-        vector<course*> incompleteCourses(numCourses);
-        for (int i = 0; i < courses.size(); i++) courses[i] = new course;
-        for (int i = 0; i < courses.size(); i++) incompleteCourses[i] = courses[i];
-        for (vector<int> pair : prerequisites)
+        while(not(values.empty()))
         {
-            courses[pair[0]]->requirements.push_back(courses[pair[1]]);
-        }
-
-        bool isMoving = true;
-        while(not(incompleteCourses.empty()) && isMoving)
-        {
-            isMoving = false;
-            for (int i = 0; i < incompleteCourses.size(); i++)
+            ListNode *temp = new ListNode(values.top());
+            if (head == NULL)
             {
-                if (isReachable(incompleteCourses[i]))
-                {
-                    isMoving = true;
-                    incompleteCourses[i]->completion = true;
-                    incompleteCourses.erase(incompleteCourses.begin() + i);
-                    i--;
-                }
+                cur = temp;
+                head = cur;
             }
+            else
+            {
+                cur->next = temp;
+                cur = cur->next;
+            }
+            values.pop();
         }
-
-        return incompleteCourses.empty();
+        return head;
     }
+};
