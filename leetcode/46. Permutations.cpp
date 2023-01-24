@@ -1,3 +1,5 @@
+class Solution {
+public:
     void addPermutation(int &level, vector<vector<int>> &ans, vector<int> arr)
     {
         if (level == arr.size() - 1)
@@ -21,3 +23,4 @@
         addPermutation(level, ans, nums);
         return ans;
     }
+};
