@@ -1,3 +1,5 @@
+class Solution {
+public:
     int insertSign(int num, char sign)
     {
         if (sign == '+') return num;
@@ -42,3 +44,4 @@
 
         return insertSign(ans, sign);
     }
+};
