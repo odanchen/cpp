@@ -1,3 +1,5 @@
+class Solution {
+public:
     void fillMap(int map[])
     {
         map['I'] = 1;
@@ -24,3 +26,4 @@
 
         return sum;
     }
+};
