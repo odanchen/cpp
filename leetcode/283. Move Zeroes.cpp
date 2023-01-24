@@ -1,3 +1,5 @@
+class Solution {
+public:
     void moveZeroes(vector<int>& nums) {
         queue<int> idxs;
         for(int i = 0; i < nums.size(); i++)
@@ -12,3 +14,4 @@
             }
         }
     }
+};
