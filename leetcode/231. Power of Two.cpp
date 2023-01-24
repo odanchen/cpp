@@ -1,10 +1,13 @@
-    bool isPowerOfTwo(int n) {
-        if (n <= 0) return false;
-        while(n > 1)
+class Solution {
+public:
+    bool containsDuplicate(vector<int>& nums) {
+        set<int> mlt;
+        for (int element : nums)
         {
-            if (n & 1) return false;
-            n = n >> 1;
+            if (mlt.find(element) != mlt.end()) return true;
+            else mlt.insert(element);
         }
 
-        return true;
+        return false;
     }
+};
