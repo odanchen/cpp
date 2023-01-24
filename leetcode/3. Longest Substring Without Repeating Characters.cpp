@@ -1,4 +1,6 @@
-   int lengthOfLongestSubstring(string s) {
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
         int i = 0, maxLen = 0, curLen = 0;
         while(i != s.size())
         {
@@ -18,3 +20,4 @@
 
         return maxLen;
     }
+};
