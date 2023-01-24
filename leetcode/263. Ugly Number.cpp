@@ -1,3 +1,5 @@
+class Solution {
+public:
     bool isUgly(int n) {
         int div = 2;
         if (n <= 0) return false;
@@ -8,3 +10,4 @@
         }
         return div <= 5;
     }
+};
