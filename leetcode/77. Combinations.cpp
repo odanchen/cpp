@@ -1,3 +1,5 @@
+class Solution {
+public:
     void addCombination(int n, int k, vector<int> arr, vector<vector<int>> &ans, int depth)
     {
         if (depth == k) 
@@ -23,3 +25,4 @@
         addCombination(n, k, arr, ans, 0);
         return ans;
     }
+};
