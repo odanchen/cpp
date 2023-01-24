@@ -1,3 +1,5 @@
+class Solution {
+public:
     typedef pair<int, int> permutation;
     bool isAns(permutation cur, int target)
     {
@@ -40,3 +42,4 @@
         }
         return false;
     }
+};
