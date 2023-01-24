@@ -1,3 +1,5 @@
+class Solution {
+public:
     int nextStep(int n)
     {
         int ans = 0;
@@ -20,3 +22,4 @@
 
         return n == 1;
     }
+};
