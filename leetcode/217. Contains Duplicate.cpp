@@ -1,3 +1,5 @@
+class Solution {
+public:
     bool containsDuplicate(vector<int>& nums) {
         set<int> mlt;
         for (int element : nums)
@@ -8,3 +10,4 @@
 
         return false;
     }
+};
