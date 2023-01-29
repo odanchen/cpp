@@ -1,5 +1,8 @@
 class Solution {
 public:
+    typedef vector<bool> vBool;
+    typedef vector<string> vStr;
+
     int getLeftDiag(int row, int col) {
         return row + col;
     }
@@ -7,12 +10,10 @@ public:
         row = n - 1 - row;
         return row + col;
     }
-    bool canBePlaces(int row, int col, int n, set<int> &cols, set<int> &leftDiags, set<int> &rightDiags) {
-        return (cols.find(col) == cols.end()) and 
-        (leftDiags.find(getLeftDiag(row, col)) == leftDiags.end()) and 
-        (rightDiags.find(getRightDiag(row, col, n)) == rightDiags.end());
+    bool canBePlaces(int row, int col, int n, vBool &cols, vBool &leftDiags, vBool &rightDiags) {
+        return (!cols[col]) and (!leftDiags[getLeftDiag(row, col)]) and (!rightDiags[getRightDiag(row, col, n)]);
     }
-    void solve(int n, vector<string> cur, int row, set<int> cols, set<int> leftDiags, set<int> rightDiags, vector<vector<string>> &ans) {
+    void solve(int n, vStr cur, int row, vBool cols, vBool leftDiags, vBool rightDiags, vector<vStr> &ans) {
         if (row == n) {
             ans.push_back(cur);
             return;
@@ -21,18 +22,19 @@ public:
         for (int col = 0; col < n; col++) {
             if (canBePlaces(row, col, n, cols, leftDiags, rightDiags)) {
                 cur[row][col] = 'Q';
-                cols.insert(col); leftDiags.insert(getLeftDiag(row, col)); rightDiags.insert(getRightDiag(row, col, n));
+                cols[col] = true; leftDiags[getLeftDiag(row, col)] = true; rightDiags[getRightDiag(row, col, n)] = true;
                 solve(n, cur, row + 1, cols, leftDiags, rightDiags, ans);
                 cur[row][col] = '.';
-                cols.erase(col); leftDiags.erase(getLeftDiag(row, col)); rightDiags.erase(getRightDiag(row, col, n));
+                cols[col] = false; 
+                leftDiags[getLeftDiag(row, col)] = false; rightDiags[getRightDiag(row, col, n)] = false;
             }
         }
     }
     vector<vector<string>> solveNQueens(int n) {
         vector<vector<string>> ans;
         vector<string> cur(n, string(n, '.'));
-
-        solve(n, cur, 0, set<int>(), set<int>(), set<int>(), ans);
+        int len = 2 * n - 1;
+        solve(n, cur, 0, vector<bool>(len, false), vector<bool>(len, false), vector<bool>(len, false), ans);
         return ans;
     }
 };
