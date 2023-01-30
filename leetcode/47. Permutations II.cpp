@@ -1,28 +1,27 @@
 class Solution {
 public:
-    void addPermutation(int &level, set<vector<int>> &ans, vector<int> arr)
+    void addPermutation(vector<vector<int>> &ans, vector<int> arr, map<int, int> options, int prevPicked)
     {
-        if (level == arr.size() - 1)
-        {
-            ans.insert(arr);
-            return;
+        if (prevPicked != -11) {
+            arr.push_back(prevPicked);
+            if (options.at(prevPicked) == 1) options.erase(options.find(prevPicked));
+            else options.at(prevPicked)--;
         }
-
-        for(int i = level; i < arr.size(); i++)
-        {
-            swap(arr[level], arr[i]);
-            level++;
-            addPermutation(level, ans, arr);
-            level--;
-            swap(arr[level], arr[i]);
+        if (options.empty()) {
+            ans.push_back(arr); return;
+        }
+        for (auto choice : options) {
+            addPermutation(ans, arr, options, choice.first);
         }
     }
     vector<vector<int>> permuteUnique(vector<int>& nums) {
         vector<vector<int>> ans;
-        set<vector<int>> unique;
-        int level = 0;
-        addPermutation(level, unique, nums);
-        for (vector<int> element : unique) ans.push_back(element);
+        map<int, int> options;
+        for (int element : nums) {
+            if(options.find(element) == options.end()) options.insert(pair<int, int>(element, 1));
+            else options.at(element)++;
+        }
+        addPermutation(ans, vector<int>(), options, -11);
         return ans;
-    }   
+    } 
 };
