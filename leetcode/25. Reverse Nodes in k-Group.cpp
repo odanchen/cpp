@@ -10,44 +10,36 @@
  */
 class Solution {
 public:
-    struct toReverse {
-        stack<ListNode*> midNodes;
-        ListNode* leftNode = NULL;
-        ListNode* rightNode = NULL;
-    };
-    void reverse(toReverse nodes) {
-        if (nodes.leftNode != NULL) nodes.leftNode->next = nodes.midNodes.top();
-        ListNode* prev = nodes.midNodes.top(); nodes.midNodes.pop();
-
-        while(!nodes.midNodes.empty()) {
-            prev->next = nodes.midNodes.top();
-            prev = nodes.midNodes.top();
-            nodes.midNodes.pop();
+    void reverse(ListNode* prev, ListNode* cur, int depth, int k) {
+        if (depth < k) {
+            reverse(cur, cur->next, depth + 1, k);
+            cur->next = prev;
         }
-        prev->next = nodes.rightNode;
+    }
+    ListNode* getNodeForward(ListNode* node, int k) {
+        for (int i = 0; i < k; i++) {
+            if (node == NULL) return NULL;
+            node = node->next;
+        }
+        return node;
+    }
+    void solve(ListNode *cur, int k) {
+        ListNode *left = NULL, *next = getNodeForward(cur, k);
+        ListNode *lNext = getNodeForward(cur, k - 1);
+        while(lNext != NULL) {
+            reverse(NULL, cur, 0, k);
+            if (left != NULL) left->next = lNext;
+            cur->next = next;
+            left = cur;
+            cur = cur->next;
+            next = getNodeForward(cur, k);
+            lNext = getNodeForward(cur, k - 1);
+        }
     }
     ListNode* reverseKGroup(ListNode* head, int k) {
-        bool isFirst = true;
-        ListNode *cur = head;
-
-        while (cur != NULL) {
-            toReverse nodes;
-            if (!isFirst) {
-                nodes.leftNode = cur;
-                cur = cur->next;
-            }
-            ListNode* newLeft = cur;
-            for (int i = 0; i < k; i++) {
-                if (cur == NULL) return head;
-                nodes.midNodes.push(cur);
-                if (i != k - 1) cur = cur->next;
-            }
-            nodes.rightNode = cur->next;
-            if (isFirst) head = nodes.midNodes.top();
-            isFirst = false;
-            reverse(nodes);
-            cur = newLeft;
-        }
-        return head;
+        ListNode *newHead = getNodeForward(head, k - 1);
+        ListNode *ans = (newHead == NULL) ? head : newHead;
+        solve(head, k);
+        return ans;
     }
 };
