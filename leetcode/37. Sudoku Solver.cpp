@@ -1,57 +1,71 @@
 class Solution {
 public:
-    vector<vector<char>> ans;
-    void fillRowValues(int row, vector<vector<char>> &board, bool valuesFound[]) {
-        for (char val : board[row]) {
-            if (val != '.') valuesFound[val - '1'] = true;
-        }
-    }
-    void fillColValues(int col, vector<vector<char>> &board, bool valuesFound[]) {
+    bool isFound = false;
+    vector<set<char>> rowVals = vector<set<char>>(9, set<char>());
+    vector<set<char>> colVals = vector<set<char>>(9, set<char>());
+    vector<set<char>> boxVals = vector<set<char>>(9, set<char>());
+    void fillRowValues(vector<vector<char>> &board) {
         for (int row = 0; row < 9; row++) {
-            if (board[row][col] != '.') valuesFound[board[row][col] - '1'] = true;
-        }
-    }
-    void fillSquareValues(int row, int col, vector<vector<char>> &board, bool valuesFound[]) {
-        int rStart = row / 3, cStart = col / 3;
-        for (int r = rStart * 3; r < rStart * 3 + 3; r++) {
-            for (int c = cStart * 3; c < cStart * 3 + 3; c++) {
-                if (board[r][c] != '.') valuesFound[board[r][c] - '1'] = true;
+            for (char digit : board[row]) {
+                if (digit != '.') rowVals[row].insert(digit);
             }
         }
     }
-    void fillValues(int row, int col, vector<vector<char>> &board, bool valuesFound[]) {
-        fillRowValues(row, board, valuesFound);
-        fillColValues(col, board, valuesFound);
-        fillSquareValues(row, col, board, valuesFound);
+    void fillColValues(vector<vector<char>> &board) {
+        for (int col = 0; col < 9; col++) {
+            for (int row = 0; row < 9; row++) {
+                if (board[row][col] != '.') colVals[col].insert(board[row][col]);
+            }
+        }
     }
-    vector<char> getPlacingOptions(int row, int col, vector<vector<char>> &board) {
-        bool valuesFound[9] = {0};
-        fillValues(row, col, board, valuesFound);
+    void fillBoxValues(vector<vector<char>> &board) {
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                int idx = (row / 3) * 3 + col / 3;
+                if (board[row][col] != '.') boxVals[idx].insert(board[row][col]);
+            }
+        }
+    }
+    vector<char> getPlacingOptions(int row, int col) {
         vector<char> ans;
-        for (int val = 0; val < 9; val++) {
-            if(!valuesFound[val]) ans.push_back(val + '1');
+        int idx = (row / 3) * 3 + col / 3;
+        for (char i = '1'; i <= '9'; i++) {
+            if (rowVals[row].find(i) == rowVals[row].end() and
+                colVals[col].find(i) == colVals[col].end() and
+                boxVals[idx].find(i) == boxVals[idx].end()) ans.push_back(i);
         }
         return ans;
     }
-    void solve(int row, int col, vector<vector<char>> board) {
+    void solve(int row, int col, vector<vector<char>> &board) {
         if (row == 9) {
-            ans = board;
+            isFound = true;
             return;
         }
-        if (!ans.empty()) return;
+        if (isFound) return;
         int nextRow = row + (col + 1) / 9;
         int nextCol = (col + 1) % 9;
         if (board[row][col] != '.') solve(nextRow, nextCol, board);
         else {
-            for (char option : getPlacingOptions(row, col, board)) {
+            for (char option : getPlacingOptions(row, col)) {
+                if (isFound) return;
                 board[row][col] = option;
+                rowVals[row].insert(option);
+                colVals[col].insert(option);
+                boxVals[(row / 3) * 3 + col / 3].insert(option);
                 solve(nextRow, nextCol, board);
+
+                if (isFound) return;
                 board[row][col] = '.';
+                rowVals[row].erase(option);
+                colVals[col].erase(option);
+                boxVals[(row / 3) * 3 + col / 3].erase(option);
             }
         }
     }
     void solveSudoku(vector<vector<char>>& board) {
+        fillRowValues(board);
+        fillColValues(board);
+        fillBoxValues(board);
         solve(0, 0, board);
-        board = ans;
     }
 };
