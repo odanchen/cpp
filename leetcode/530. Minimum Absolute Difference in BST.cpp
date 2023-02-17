@@ -11,24 +11,15 @@
  */
 class Solution {
 public:
-    void bst(TreeNode *root, vector<int> &nodes)
-    {
-        if (root == NULL) return;
-
-        bst(root->left, nodes);
-        nodes.push_back(root->val);
-        bst(root->right, nodes);
-    }
+    optional<int> prev;
     int getMinimumDifference(TreeNode* root) {
-        vector<int> nodes;
-        bst(root, nodes);
+        if (root == NULL) return INT_MAX;
 
-        int diff = abs(nodes[0] - nodes[1]);
-        for (int i = 1; i < nodes.size(); i++)
-        {
-            diff = min(diff, abs(nodes[i - 1] - nodes[i]));
-        }
+        int ans = getMinimumDifference(root->left);
+        ans = min(prev.has_value() ? abs(root->val - prev.value()) : INT_MAX, ans);
+        prev = root->val;
+        ans = min (ans, getMinimumDifference(root->right));
 
-        return diff;
+        return ans;
     }
 };
