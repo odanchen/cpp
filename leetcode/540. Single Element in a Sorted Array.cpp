@@ -7,7 +7,7 @@ public:
             if (mid == 0 or mid == nums.size() - 1) return nums[mid];
 
             if (nums[mid - 1] != nums[mid] and nums[mid + 1] != nums[mid]) return nums[mid];
-            mid = (nums[mid - 1] == nums[mid]) ? mid - 1 : mid;
+            if (nums[mid - 1] == nums[mid]) mid--;
             if (mid & 1) right = mid - 1;
             else left = mid + 2;
         }
