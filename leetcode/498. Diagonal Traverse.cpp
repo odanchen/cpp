@@ -1,66 +1,43 @@
 class Solution {
 public:
-    void moveUp(int &row, int &col)
-    {
+    void moveUp(int &row, int &col) {
         row--;
         col++;
     }
-    void moveDown(int &row, int &col)
-    {
+    void moveDown(int &row, int &col) {
         row++;
         col--;
     }
-    bool onBorder(int row, int col, vector<vector<int>>& mat, bool directionUp)
-    {  
-        bool ans = (directionUp && (row == 0 || col == mat[0].size() - 1));
-        ans = ans || (not(directionUp) && (col == 0 || row == mat.size() - 1));
-        return ans;
+    bool onBorder(int row, int col, vector<vector<int>>& mat, bool directionUp) {  
+        return (directionUp && (row == 0 || col == mat[0].size() - 1)) || 
+            (!(directionUp) && (col == 0 || row == mat.size() - 1));
     }
-    void adjust(int &row, int &col, vector<vector<int>>& mat, bool &directionUp)
-    {
+    void adjust(int &row, int &col, vector<vector<int>>& mat, bool &directionUp) {
         if (row == mat.size() - 1 && col == mat[0].size() - 1) return;
 
-        if(directionUp)
-        {
+        if (directionUp) {
             if (col == mat[0].size() - 1) row++;
             else col++;
-        }
-        else
-        {
+        } else {
             if(row == mat.size() - 1) col++;
             else row++;
         }
-        directionUp = not(directionUp);
+        directionUp = !directionUp;
     }
     vector<int> findDiagonalOrder(vector<vector<int>>& mat) {
-        vector<int> ans;
         int maxlen = mat.size() * mat[0].size();
-        ans.resize(maxlen);
+        vector<int> ans(maxlen);
 
-        int row = 0;
-        int col = 0;
-        int idx = 0;
-
+        int row = 0, col = 0, idx = 0;
         bool directionUp = true;
-        while(idx < maxlen)
-        {
-            while(not(onBorder(row, col, mat, directionUp)))
-            {
-                if (directionUp)
-                {
-                    ans[idx] = mat[row][col];
-                    moveUp(row, col);
-                    idx++;
-                }
-                else 
-                {
-                    ans[idx] = mat[row][col];
-                    moveDown(row, col);
-                    idx++;
-                }
+
+        while(idx < maxlen) {
+            while(!(onBorder(row, col, mat, directionUp))) {
+                ans[idx++] = mat[row][col];
+                if (directionUp) moveUp(row, col);
+                else moveDown(row, col);
             }
-            ans[idx] = mat[row][col];
-            idx++;
+            ans[idx++] = mat[row][col];
             adjust(row, col, mat, directionUp);
         }
 
