@@ -1,10 +1,11 @@
+class Solution {
+public:
     int arraySign(vector<int>& nums) {
-        bool neg = false;
-        for (int element : nums)
-        {
-            if (element == 0) return 0;
-            if (element < 0) neg = !neg;
+        bool ans = true;
+        for (int val : nums) {
+            if (val == 0) return 0;
+            if (val < 0) ans = !ans;
         }
-
-        return neg ? -1 : 1;
+        return ans ? 1 : -1;
     }
+};
