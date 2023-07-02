@@ -1,16 +1,15 @@
 class Solution {
 public:
-    vector<int> twoSum(vector<int>& numbers, int target) {
-        int left, right;
-        left = 0;
-        right = numbers.size() - 1;
-
-        while(numbers[left] + numbers[right] != target)
-        {
-            if(numbers[left] + numbers[right] > target) right--;
-            else left++;
+    void rotate(vector<int>& nums, int k) {
+        k = k < 0 ? (k + nums.size()) % nums.size() : k % nums.size();
+        int left = 0, right = k, numGCD = gcd(nums.size(), k);
+        while (left != numGCD) {
+            right = (left + k) % nums.size();
+            while(left != right) {
+                swap(nums[left], nums[right]);
+                right = (right + k) % nums.size();
+            }
+            left++;
         }
-
-        return (vector<int>) {left + 1, right + 1};
     }
 };
