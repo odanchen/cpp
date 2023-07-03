@@ -1,32 +1,18 @@
 class Solution {
 public:
     string convert(string s, int numRows) {
-        if (numRows == 1) return s;
-        string ans[numRows];
-        int row;
-        int i = 1;
-        ans[0].insert(ans[0].begin() + ans[0].size(), s[0]);
-
-        while(i < s.size())
-        {
-            for (row = 1; row < numRows && i < s.size(); row++)
-            {
-                ans[row].insert(ans[row].begin() + ans[row].size(), s[i]);
-                i++;
-            }
-
-            for (row = numRows - 2; row >= 0 && i < s.size(); row--)
-            {
-                ans[row].insert(ans[row].begin() + ans[row].size(), s[i]);
-                i++;
+        if(numRows == 1) return s;
+        string ans(s.size(), '0');
+        int idx = 0;
+        for (int i = 0; i < numRows; i++) {
+            int j = i;
+            while (j < s.size()) {
+                ans[idx++] = s[j];
+                j += numRows - 1 - i == 0 ? (numRows - 1) * 2 : (numRows - 1 - i) * 2;
+                if (j < s.size()) ans[idx++] = s[j];
+                j += (i == 0) ? (numRows - 1) * 2 : i * 2;
             }
         }
-        
-        string res = "";
-        for(int i = 0; i < numRows; i++)
-        {
-            res += ans[i];
-        }
-        return res;
+        return ans;
     }
 };
