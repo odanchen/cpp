@@ -6,9 +6,7 @@ public:
     
     void push(int val) {
         allStack.push(val);
-        if (minStack.empty() or minStack.top().first > val) {
-            minStack.push({val, allStack.size()});
-        }
+        if (minStack.empty() or minStack.top().first > val) minStack.push({val, allStack.size()});
     }
     
     void pop() {
@@ -23,6 +21,7 @@ public:
     int getMin() {
         return minStack.top().first;
     }
+    
 private:
     stack<int> allStack;
     stack<pair<int, int>> minStack;
