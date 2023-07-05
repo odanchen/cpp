@@ -9,10 +9,7 @@ public:
             i--;
             ans = max (ans, len1 + len2);
             if (i >= nums.size() - 1 or nums[i + 1] == 0) len1 = len2 = 0;
-            else if (len2 != 0) {
-                swap(len1, len2);
-                len2 = 0;
-            }
+            else if (len2 != 0) swap(len1 = 0, len2);
         }
         return ans == nums.size() ? ans - 1 : ans;
     }
