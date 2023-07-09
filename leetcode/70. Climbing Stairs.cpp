@@ -5,8 +5,7 @@ public:
         if (n == 2) return 2;
 
         int cur = 3, prev = 2;
-        for (int i = 4; i <= n; i++)
-        {
+        for (int i = 4; i <= n; i++) {
             int temp = cur + prev;
             prev = cur;
             cur = temp;
