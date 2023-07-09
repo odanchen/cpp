@@ -1,18 +1,14 @@
 class Solution {
 public:
-    bool isValid(string s) 
-    {
-        stack<char> braces;
-        for (int i = 0; i < s.size(); i++)
-        {
-            if (s[i] == '(' || s[i] == '{' || s[i] == '[') braces.push(s[i]);
-            else if (braces.empty() == false &&
-                    ((braces.top() == '(' && s[i] == ')') ||
-                    (braces.top() == '{' && s[i] == '}') ||
-                    (braces.top() == '[' && s[i] == ']'))) braces.pop();
-            
-            else return false;
+    bool isValid(string s) {
+        unordered_map<char, char> closing = {{')', '('}, {']', '['}, {'}', '{'}};
+        stack<char> brackets;
+        for (char val : s) {
+            if (closing.find(val) != closing.end()) {
+                if (brackets.empty() or closing[val] != brackets.top()) return false;
+                else brackets.pop();
+            } else brackets.push(val);
         }
-        return braces.empty();
+        return brackets.empty();
     }
 };
