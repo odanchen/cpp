@@ -8,6 +8,6 @@ public:
             else left++;
         }
 
-        return vector<int>{left + 1, right + 1};
+        return {left + 1, right + 1};
     }
 };
