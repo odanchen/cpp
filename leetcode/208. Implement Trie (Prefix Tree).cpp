@@ -8,10 +8,10 @@ public:
         TreeNode* node = root;
         
         for (char c : word) {
-            if (node->children.find(c) == node->children.end()) node->children[c] = new TreeNode(c);
+            if (node->children.find(c) == node->children.end()) node->children[c] = new TreeNode;
             node = node->children[c];
         }
-        node->children['*'] = new TreeNode('*');
+        node->children['*'] = new TreeNode;
     }
     
     bool search(string word) {
@@ -33,11 +33,9 @@ public:
     }
 private:
     struct TreeNode {
-        char letter;
         unordered_map<char, TreeNode*> children;
-        TreeNode(char c) : letter(c) {}
     };
-    TreeNode* root = new TreeNode('*');
+    TreeNode* root = new TreeNode;
 };
 
 /**
